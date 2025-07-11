@@ -1,0 +1,19 @@
+{
+  "TCP": {
+    "443": {
+      "HTTPS": true
+    }
+  },
+  "Web": {
+    "vaultwarden.dolphin-silverside.ts.net:443": {
+      "Handlers": {
+        "/": {
+          "Proxy": "http://127.0.0.1:80"
+        }
+      }
+    }
+  },
+  "AllowFunnel": {
+    "vaultwarden.dolphin-silverside.ts.net:443": true
+  }
+}

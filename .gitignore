@@ -1,1 +1,8 @@
 *.env
+**/data/
+**/.env
+**/logs/
+**/*.log
+**/tmp/
+**/.env.local
+**/.env.production

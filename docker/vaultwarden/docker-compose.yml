@@ -1,0 +1,43 @@
+
+
+services:
+  vaultwarden:
+    image: vaultwarden/server:latest
+    container_name: vaultwarden
+    restart: unless-stopped
+    network_mode: service:tailscale
+    volumes:
+      - ./data:/data
+    environment:
+      WEBSOCKET_ENABLED: "$WEBSOCKET_ENABLED"
+      SIGNUPS_ALLOWED: "$SIGNUPS_ALLOWED"
+      INVITATIONS_ALLOWED: "$INVITATIONS_ALLOWED"
+      ADMIN_TOKEN: "$ADMIN_TOKEN"
+      DOMAIN: "$DOMAIN"
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_SECURITY: ${SMTP_SECURITY}
+      SMTP_USERNAME: ${SMTP_USERNAME}
+      SMTP_PASSWORD: ${SMTP_PASSWORD}
+      SMTP_FROM: ${SMTP_FROM}
+
+  tailscale:
+    image: ghcr.io/tailscale/tailscale:latest
+    container_name: tailscale_vw
+    restart: unless-stopped
+    environment:
+      - TS_AUTHKEY=${TS_AUTHKEY}
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_HOSTNAME=${TS_HOSTNAME}
+      - TS_SERVE_CONFIG=/config/serve.json
+      - TS_CERT_DOMAIN=${TS_CERT_DOMAIN}
+    volumes:
+      - ./tailscale-config:/config
+      - tailscale-state:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+
+volumes:
+  tailscale-state:
