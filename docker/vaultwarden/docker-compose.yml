@@ -3,7 +3,7 @@
 services:
   vaultwarden:
     image: vaultwarden/server:latest
-    container_name: vaultwarden
+    container_name: vaultwarden_server
     restart: unless-stopped
     network_mode: service:tailscale
     volumes:
@@ -23,7 +23,7 @@ services:
 
   tailscale:
     image: ghcr.io/tailscale/tailscale:latest
-    container_name: tailscale_vw
+    container_name: vaultwarden_tailscale
     restart: unless-stopped
     environment:
       - TS_AUTHKEY=${TS_AUTHKEY}
