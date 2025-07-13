@@ -28,8 +28,9 @@ services:
       - /etc/localtime:/etc/localtime:ro # ro = read-only
     env_file:
       - .env
-    ports:
-      - '2283:2283'
+    # ports:
+    #   - '2283:2283'
+    network_mode: service:tailscale
     depends_on:
       - redis
       - database
@@ -80,6 +81,25 @@ services:
     command: >-
       postgres -c shared_preload_libraries=vectors.so -c 'search_path="$$user", public, vectors' -c logging_collector=on -c max_wal_size=2GB -c shared_buffers=512MB -c wal_compression=on
     restart: always
+  
+  tailscale:
+    image: ghcr.io/tailscale/tailscale:latest
+    container_name: immich_tailscale
+    restart: unless-stopped
+    environment:
+      - TS_AUTHKEY=${TS_AUTHKEY}
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_HOSTNAME=${TS_HOSTNAME}
+      - TS_SERVE_CONFIG=/config/serve.json
+      - TS_CERT_DOMAIN=${TS_CERT_DOMAIN}
+    volumes:
+      - ./tailscale-config:/config
+      - tailscale-state:/var/lib/tailscale
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
 
 volumes:
   model-cache:
+  tailscale-state:
