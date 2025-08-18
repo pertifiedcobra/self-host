@@ -1,5 +1,7 @@
 *.env
 **/data/
+**/cache/
+**/config/
 **/.env
 **/logs/
 **/*.log
