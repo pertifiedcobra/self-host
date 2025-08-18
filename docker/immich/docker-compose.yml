@@ -83,7 +83,7 @@ services:
     restart: always
   
   tailscale:
-    image: ghcr.io/tailscale/tailscale:latest
+    image: ghcr.io/tailscale/tailscale:stable
     container_name: immich_tailscale
     restart: unless-stopped
     environment:

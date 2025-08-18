@@ -22,7 +22,7 @@ services:
       SMTP_FROM: ${SMTP_FROM}
 
   tailscale:
-    image: ghcr.io/tailscale/tailscale:latest
+    image: ghcr.io/tailscale/tailscale:stable
     container_name: vaultwarden_tailscale
     restart: unless-stopped
     environment:
