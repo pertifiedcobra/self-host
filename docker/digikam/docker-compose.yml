@@ -1,0 +1,18 @@
+services:
+  digikam:
+    image: linuxserver/digikam:latest
+    container_name: digikam
+    environment:
+      - PUID=${PUID}
+      - PGID=${PGID}
+      - TZ=${TZ}
+    volumes:
+      - ./data:/config
+      - ${MEDIA_ARCHIVE_LOCATION}:/data/media_archive
+      - ${PHONE_BACKUP_LOCATION}:/data/phone_backup
+    ports:
+      - 3000:3000
+    restart: unless-stopped
+    shm_size: "1gb" # Recommended for KasmVNC/GUI apps
+    security_opt:
+      - seccomp:unconfined # Often needed for GUI apps
